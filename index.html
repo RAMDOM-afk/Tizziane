@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tizziane</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .toggle-form {
+            cursor: pointer;
+            color: #007BFF;
+            text-decoration: underline;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tizziane</h1>
+    <div class="form-container">
+        <div id="login-form">
+            <h2>Iniciar sesión</h2>
+            <input type="text" id="login-name" placeholder="Nombre" required>
+            <input type="password" id="login-password" placeholder="Contraseña" required>
+            <select id="warehouse-select" required>
+                <option value="" disabled selected>Selecciona un almacén</option>
+                <option value="COPACABANA">COPACABANA</option>
+                <option value="MAÑANERO">MAÑANERO</option>
+                <option value="TIZZIANE">TIZZIANE</option>
+                <option value="LA FORTUNA">LA FORTUNA</option>
+            </select>
+            <button onclick="login()">Iniciar sesión</button>
+            <div class="toggle-form" onclick="toggleForms()">¿No tienes cuenta? Regístrate</div>
+        </div>
+
+        <div id="register-form" style="display: none;">
+            <h2>Registro</h2>
+            <input type="text" id="register-name" placeholder="Nombre" required>
+            <input type="password" id="register-password" placeholder="Contraseña" required>
+            <button onclick="register()">Registrarse</button>
+            <div class="toggle-form" onclick="toggleForms()">¿Ya tienes cuenta? Iniciar sesión</div>
+        </div>
+    </div>
+
+    <script>
+        const users = {}; // Almacenará los usuarios
+
+        function toggleForms() {
+            const registerForm = document.getElementById('register-form');
+            const loginForm = document.getElementById('login-form');
+            if (registerForm.style.display === "none") {
+                registerForm.style.display = "block";
+                loginForm.style.display = "none";
+            } else {
+                registerForm.style.display = "none";
+                loginForm.style.display = "block";
+            }
+        }
+
+        function register() {
+            const name = document.getElementById('register-name').value;
+            const password = document.getElementById('register-password').value;
+            if (name && password) {
+                users[name] = password;
+                alert('Registro exitoso. Ahora puedes iniciar sesión.');
+                toggleForms();
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        }
+
+        function login() {
+            const name = document.getElementById('login-name').value;
+            const password = document.getElementById('login-password').value;
+            const warehouse = document.getElementById('warehouse-select').value;
+            if (users[name] && users[name] === password && warehouse) {
+                // Redirigir a dashboard.html pasando el almacén seleccionado
+                window.location.href = `dashboard.html?warehouse=${warehouse}`;
+            } else {
+                alert('Nombre, contraseña o almacén incorrectos.');
+            }
+        }
+
+        // Mostrar directamente el formulario de inicio de sesión al cargar la página
+        window.onload = function() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+        };
+    </script>
+</body>
+</html>

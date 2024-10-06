@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Tizziane</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .logout-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .logout-button:hover {
+            background-color: #d32f2f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="welcome-message"></h1>
+        <p>Has iniciado sesión exitosamente.</p>
+
+        <h2>Inventario</h2>
+        <table id="inventory-table">
+            <thead>
+                <tr>
+                    <th>Nombre del Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los elementos del inventario se insertarán aquí -->
+            </tbody>
+        </table>
+
+        <button class="logout-button" onclick="logout()">Cerrar sesión</button>
+    </div>
+
+    <script>
+        function logout() {
+            alert('Has cerrado sesión.');
+            window.location.href = 'index.html'; // Redirigir a la página de inicio
+        }
+
+        // Obtener el almacén seleccionado de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const warehouse = urlParams.get('warehouse');
+        document.getElementById('welcome-message').innerText = `Bienvenido al Dashboard - Almacén seleccionado: ${warehouse}`;
+
+        // Definir un inventario de ejemplo por almacén
+        const inventory = {
+            almacen1: [
+                { name: 'Producto A1', quantity: 10, price: 100 },
+                { name: 'Producto A2', quantity: 20, price: 150 },
+                { name: 'Producto A3', quantity: 5, price: 200 }
+            ],
+            almacen2: [
+                { name: 'Producto B1', quantity: 8, price: 80 },
+                { name: 'Producto B2', quantity: 15, price: 120 },
+                { name: 'Producto B3', quantity: 3, price: 300 }
+            ],
+            almacen3: [
+                { name: 'Producto C1', quantity: 12, price: 60 },
+                { name: 'Producto C2', quantity: 10, price: 90 },
+                { name: 'Producto C3', quantity: 5, price: 250 }
+            ]
+        };
+
+        // Llenar la tabla del inventario con los datos del almacén seleccionado
+        function loadInventory(warehouse) {
+            const tableBody = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = ''; // Limpiar la tabla antes de llenarla
+            const items = inventory[warehouse] || [];
+
+            items.forEach(item => {
+                const row = tableBody.insertRow();
+                const nameCell = row.insertCell(0);
+                const quantityCell = row.insertCell(1);
+                const priceCell = row.insertCell(2);
+
+                nameCell.innerText = item.name;
+                quantityCell.innerText = item.quantity;
+                priceCell.innerText = `$${item.price}`;
+            });
+        }
+
+        // Cargar el inventario correspondiente al almacén seleccionado
+        loadInventory(warehouse);
+    </script>
+</body>
+</html>
